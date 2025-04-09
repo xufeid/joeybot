@@ -1,5 +1,7 @@
 import { formatTimeAgo } from '../utils/txsAnalyzer.js';
 
+const GMGN_REFERAL_CODE = process.env.GMGN_REFERAL_CODE;
+
 // Formats a number to a readable currency string with appropriate suffixes
 function formatNumber(number) {
   // Ensure number is a numeric type
@@ -47,7 +49,7 @@ ${smartMoneyCount} wallets bought $${tokenInfo.symbol}
 
 ${formatSmartMoney(analysis)}
 
-<a href="https://dexscreener.com/solana/${tokenInfo.address}">DexScreener</a> | <a href="https://gmgn.ai/sol/token/${tokenInfo.address}">GMGN</a>${tokenInfo.website ? ` | <a href="${tokenInfo.website}">Website</a>` : ''}${tokenInfo.twitter ? ` | <a href="${tokenInfo.twitter}">Twitter</a>` : ''}
+<a href="https://gmgn.ai/sol/token/${GMGN_REFERAL_CODE}_${tokenInfo.address}">GMGN</a>${tokenInfo.website ? ` | <a href="https://dexscreener.com/solana/${tokenInfo.address}">DexScreener</a> | <a href="${tokenInfo.website}">Website</a>` : ''}${tokenInfo.twitter ? ` | <a href="${tokenInfo.twitter}">Twitter</a>` : ''}
 `.trim();
 }
 
