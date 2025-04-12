@@ -10,8 +10,6 @@ const openai = new OpenAI({
   baseURL: "https://api.deepseek.com/v1",
 });
 
-const MEME_ANALYSIS_PROMPT = process.env.MEME_ANALYSIS_PROMPT;
-
 // Summarizes tweets related to a token from both account and search results
 async function sumTweets(tokenInfo) {
   const { symbol, address, twitter } = tokenInfo;
@@ -76,8 +74,8 @@ Engagement: ${tweet.views} views / ${tweet.favorites} likes
 ---`);
     } else {
       // Search tweets
-      promptPrefix = `请总结关于 ${symbol} 的搜索推文：`;
-      promptSuffix = `提供关于叙事观点和风险内容的极简要点总结。保持简洁直接,去除所有不必要的词语。格式如下：
+      promptPrefix = `请总结关于 ${symbol} 的搜索推文:`;
+      promptSuffix = `提供关于叙事观点和风险内容的极简要点总结。不总结主观价格预测和个人收益的内容。保持简洁直接,去除所有不必要的词语。格式如下：
 - 叙事观点：
 - 风险内容：`;
       
@@ -96,9 +94,7 @@ Engagement: ${tweet.views} views / ${tweet.favorites} likes
 
 ${tweetData.join('\n')}
 
-${promptSuffix}
-
-${MEME_ANALYSIS_PROMPT}`;
+${promptSuffix}`;
 
     const response = await openai.chat.completions.create({
       model: "deepseek-chat",
