@@ -51,9 +51,9 @@ ${formatSmartMoney(analysis)}
 
 <a href="https://dexscreener.com/solana/${tokenInfo.address}">DexScreener</a> ${tokenInfo.website ? ` | <a href="${tokenInfo.website}">Website</a>` : ''}${tokenInfo.twitter ? ` | <a href="${tokenInfo.twitter}">Twitter</a>` : ''}
 
-<a href="https://x.com/search?q=${tokenInfo.address}">X search CA</a> | <a href="https://x.com/search?q=${tokenInfo.symbol}">X search Ticker</a>
+<a href="https://x.com/search?q=${tokenInfo.address}">CA search on X</a> | <a href="https://x.com/search?q=$${tokenInfo.symbol}">Ticker search on X </a>
 
-<a href="https://gmgn.ai/sol/token/${GMGN_REFERAL_CODE}_${tokenInfo.address}">GMGN</a> | <a href="https://t.me/GMGN_sol_bot?start=i_${GMGN_REFERAL_CODE}_c_${tokenInfo.address}">GMGN TG Bot</a> 
+<a href="https://gmgn.ai/sol/token/${GMGN_REFERAL_CODE}_${tokenInfo.address}">GMGN</a> | <a href="https://t.me/GMGN_sol_bot?start=i_${GMGN_REFERAL_CODE}_c_${tokenInfo.address}">GMGN Bot</a> 
 `.trim();
 }
 
