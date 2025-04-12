@@ -103,7 +103,7 @@ ${promptSuffix}`;
         { role: "user", content: prompt }
       ],
       temperature: 1.0,
-      max_tokens: 10000
+      max_tokens: 8000
     });
 
     return response.choices[0].message.content;
