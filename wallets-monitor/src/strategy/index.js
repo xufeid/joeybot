@@ -21,10 +21,11 @@ const getTimeStamp = () => {
 // Check if token meets filtering criteria
 async function checkFilter(tokenAddress) {
   try {
-    const tokenInfo = await DexScreener.getTokenInfo('solana', tokenAddress);   
+    const tokenInfo = await DexScreener.getTokenInfo('solana', tokenAddress); 
     if (!tokenInfo) return;
     
     const pairAge = (Date.now() / 1000 - tokenInfo.createdAt) / (60 * 60 * 24);
+    console.log(`token ${tokenAddress} 's information: Market Cap: [${tokenInfo.marketCap}], PairAge: [${pairAge}]`); 
     if (pairAge <= MAX_AGE_DAYS && tokenInfo.marketCap >= MIN_MARKET_CAP) {
       const analysis = await analyzeTokenTxs(tokenAddress);
       
