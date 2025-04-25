@@ -34,13 +34,24 @@ async function checkFilter(tokenAddress) {
 
       // Create and send message to Telegram
       const message = createMsg(tokenInfo, analysis);
-      const tgResponse = await sendTelegramMessage(message);
-
-      if (tgResponse?.ok === true) {
-        const messageId = tgResponse.result.message_id;
-        // Send AI summary message
-        await sendSumMessage(tokenInfo, messageId);
-        console.log(`[${getTimeStamp()}] Successfully sent analysis for token ${tokenAddress} to Telegram`);
+      
+      try {
+        const tgResponse = await sendTelegramMessage(message);
+        
+        if (tgResponse?.ok === true) {
+          const messageId = tgResponse.result.message_id;
+          // Send AI summary message with error handling
+          try {
+            await sendSumMessage(tokenInfo, messageId);
+            console.log(`[${getTimeStamp()}] Successfully sent analysis for token ${tokenAddress} to Telegram`);
+          } catch (sumError) {
+            console.error(`[${getTimeStamp()}] Error sending AI summary: `, sumError);
+            // 发送一个简单的错误通知
+            await sendTelegramMessage(`⚠️ AI分析生成失败，请稍后重试\n代币地址: ${tokenAddress}`);
+          }
+        }
+      } catch (tgError) {
+        console.error(`[${getTimeStamp()}] Error sending Telegram message: `, tgError);
       }
     }
   } catch (error) {
