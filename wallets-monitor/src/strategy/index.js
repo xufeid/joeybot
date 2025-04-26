@@ -33,7 +33,7 @@ async function checkFilter(tokenAddress) {
       const analysis = await analyzeTokenTxs(tokenAddress);
 
       // Create and send message to Telegram
-      const message = createMsg(tokenInfo, analysis);
+      const message = createMsg(tokenInfo, analysis, totalScore);
       
       try {
         const tgResponse = await sendTelegramMessage(message);
