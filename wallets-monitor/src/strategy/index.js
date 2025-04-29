@@ -170,7 +170,7 @@ async function startMonitor() {
 
 // 修改Promise.all，添加新的监控函数
 Promise.all([
-  startMonitor(),
+//  startMonitor(),
   startBot(),
 //  startNewsEnhancer(),
 //  startNewsPublisher(),
