@@ -9,7 +9,7 @@ import { startBot } from '../utils/agent/telegramChatListener.js';
 import { startNewsEnhancer } from '../utils/news/newsEnhancer.js';
 import { startNewsPublisher } from '../utils/news/newsPublisher.js';
 import { startTGNewsChannelCollector } from '../utils/news/collectors/jsNewsChannelCollector.js';
-import { startBWENewsCollector } from '../utils/news/collectors/bweNewsCollector.js';
+
 import dotenv from 'dotenv';
 
 dotenv.config();
