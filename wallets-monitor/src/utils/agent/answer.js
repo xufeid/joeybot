@@ -1,5 +1,5 @@
-import { searchTwitter } from './tweetApi.js';
-import { sendUserMessage } from './telegram.js';
+import { searchTwitter } from '../tweetApi.js';
+import { sendUserMessage } from '../telegram.js';
 import OpenAI from "openai";
 import dotenv from 'dotenv';
 import { createClient } from '@supabase/supabase-js';
@@ -12,8 +12,8 @@ import {
   updateUserSessionContext,
   cleanupExpiredSessions,
   ensureUserExists
-} from './user.js';
-import { generateUsageMessage, generateSubscriptionInfo, generateHelpMessage } from './menu.js';
+} from '../user.js';
+import { generateUsageMessage, generateSubscriptionInfo, generateHelpMessage } from '../menu.js';
 
 dotenv.config();
 

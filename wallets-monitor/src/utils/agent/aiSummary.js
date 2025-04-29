@@ -1,5 +1,5 @@
-import { searchTwitter, getUserTimeline } from './tweetApi.js';
-import { sendTelegramMessage } from './telegram.js';
+import { searchTwitter, getUserTimeline } from '../tweetApi.js';
+import { sendTelegramMessage } from '../telegram.js';
 import OpenAI from "openai";
 import dotenv from 'dotenv';
 

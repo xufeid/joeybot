@@ -4,7 +4,7 @@ import { SOL_ADDRESS, USDC_ADDRESS } from '../utils/swapProcessor.js';
 import { sendTelegramMessage } from '../utils/telegram.js';
 import { analyzeTokenTxs } from '../utils/txsAnalyzer.js';
 import { createMsg } from './messageTemplate.js';
-import { sendSumMessage } from '../utils/aiSummary.js';
+import { sendSumMessage } from '../utils/agent/aiSummary.js';
 import dotenv from 'dotenv';
 
 dotenv.config();

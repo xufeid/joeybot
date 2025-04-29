@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import dotenv from 'dotenv';
 import { handleUserQuestion } from './answer.js';
-import { sendUserMessage } from './telegram.js';
+import { sendUserMessage } from '../telegram.js';
 
 dotenv.config();
 

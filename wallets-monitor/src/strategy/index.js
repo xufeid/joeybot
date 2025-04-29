@@ -4,8 +4,12 @@ import { SOL_ADDRESS, USDC_ADDRESS } from '../utils/swapProcessor.js';
 import { sendTelegramMessage } from '../utils/telegram.js';
 import { analyzeTokenTxs } from '../utils/txsAnalyzer.js';
 import { createMsg } from './messageTemplate.js';
-import { sendSumMessage } from '../utils/aiSummary.js';
-import { startBot } from '../utils/telegramChatListener.js';
+import { sendSumMessage } from '../utils/agent/aiSummary.js';
+import { startBot } from '../utils/agent/telegramChatListener.js';
+import { startNewsEnhancer } from '../utils/news/newsEnhancer.js';
+import { startNewsPublisher } from '../utils/news/newsPublisher.js';
+import { startTGNewsChannelCollector } from '../utils/news/collectors/jsNewsChannelCollector.js';
+import { startBWENewsCollector } from '../utils/news/collectors/bweNewsCollector.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -33,25 +37,14 @@ async function checkFilter(tokenAddress) {
       const analysis = await analyzeTokenTxs(tokenAddress);
 
       // Create and send message to Telegram
-      const message = createMsg(tokenInfo, analysis, totalScore);
-      
-      try {
-        const tgResponse = await sendTelegramMessage(message);
-        
-        if (tgResponse?.ok === true) {
-          const messageId = tgResponse.result.message_id;
-          // Send AI summary message with error handling
-          try {
-            await sendSumMessage(tokenInfo, messageId);
-            console.log(`[${getTimeStamp()}] Successfully sent analysis for token ${tokenAddress} to Telegram`);
-          } catch (sumError) {
-            console.error(`[${getTimeStamp()}] Error sending AI summary: `, sumError);
-            // 发送一个简单的错误通知
-            await sendTelegramMessage(`⚠️ AI分析生成失败，请稍后重试\n代币地址: ${tokenAddress}`);
-          }
-        }
-      } catch (tgError) {
-        console.error(`[${getTimeStamp()}] Error sending Telegram message: `, tgError);
+      const message = createMsg(tokenInfo, analysis);
+      const tgResponse = await sendTelegramMessage(message);
+
+      if (tgResponse?.ok === true) {
+        const messageId = tgResponse.result.message_id;
+        // Send AI summary message
+        await sendSumMessage(tokenInfo, messageId);
+        console.log(`[${getTimeStamp()}] Successfully sent analysis for token ${tokenAddress} to Telegram`);
       }
     }
   } catch (error) {
@@ -175,10 +168,14 @@ async function startMonitor() {
       })
 }
 
-// Start monitoring and Telegram bot
+// 修改Promise.all，添加新的监控函数
 Promise.all([
   startMonitor(),
-  startBot()
+  startBot(),
+//  startNewsEnhancer(),
+//  startNewsPublisher(),
+//  startTGNewsChannelCollector(),
+//  startBWENewsCollector()
 ]).catch(error => {
   console.error(`[${getTimeStamp()}] Program error:`, error);
   process.exit(1);

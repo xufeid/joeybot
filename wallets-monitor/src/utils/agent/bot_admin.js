@@ -1,4 +1,4 @@
-import { sendTelegramMessage } from "./telegram.js";
+import { sendTelegramMessage } from "../telegram.js";
 import dotenv from "dotenv";
 
 dotenv.config();

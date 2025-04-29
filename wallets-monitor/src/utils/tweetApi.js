@@ -15,8 +15,8 @@ axiosRetry(axios, {
   },
   retryCondition: (error) => {
     // Only retry on network errors or 5xx errors
-    return axiosRetry.isNetworkOrIdempotentRequestError(error) ||
-        (error.response && error.response.status >= 500);
+    return axiosRetry.isNetworkOrIdempotentRequestError(error) || 
+           (error.response && error.response.status >= 500);
   }
 });
 
@@ -54,13 +54,13 @@ export async function searchTwitter(query, searchType = 'Top') {
   return response.data.timeline.map(tweet => ({
     text: tweet.text,                    // Tweet content
     created_at: new Date(tweet.created_at).toLocaleString('en-US', {hour12: false}) + ' UTC',  // Published time, format: 2025/2/25 14:41:14 UTC
-
+    
     // Engagement data
     views: tweet.views,                  // View count
     favorites: tweet.favorites,          // Like count
     retweets: tweet.retweets,           // Retweet count
     replies: tweet.replies,              // Reply count
-
+    
     // Author information
     author: {
       name: tweet.user_info.name,
@@ -94,7 +94,7 @@ export async function getUserTimeline(screenname) {
     console.error('Twitter API Timeline Error: No response data');
     return null;
   }
-
+  
   // Organize data structure
   const result = {
     user: {
@@ -106,12 +106,12 @@ export async function getUserTimeline(screenname) {
     },
     tweets: []
   };
-
+  
   // Add pinned tweet (if exists)
   if (response.data.pinned) {
     result.tweets.push({
       text: response.data.pinned.text,
-      created_at: new Date(response.data.pinned.created_at).toLocaleString('en-US', {hour12: false}) + ' UTC',
+      created_at: new Date(response.data.pinned.created_at).toLocaleString('en-US', {hour12: false}) + ' UTC', 
       views: response.data.pinned.views,
       favorites: response.data.pinned.favorites,
       retweets: response.data.pinned.retweets,
@@ -119,13 +119,13 @@ export async function getUserTimeline(screenname) {
       isPinned: true
     });
   }
-
+  
   // Add timeline tweets
   if (response.data.timeline && Array.isArray(response.data.timeline)) {
     response.data.timeline.forEach(tweet => {
       result.tweets.push({
         text: tweet.text,
-        created_at: new Date(tweet.created_at).toLocaleString('en-US', {hour12: false}) + ' UTC',
+        created_at: new Date(tweet.created_at).toLocaleString('en-US', {hour12: false}) + ' UTC', 
         views: tweet.views,
         favorites: tweet.favorites,
         retweets: tweet.retweets,
@@ -134,7 +134,7 @@ export async function getUserTimeline(screenname) {
       });
     });
   }
-
+  
   return result;
 }
 
