@@ -6,9 +6,9 @@ import { analyzeTokenTxs } from '../utils/txsAnalyzer.js';
 import { createMsg } from './messageTemplate.js';
 import { sendSumMessage } from '../utils/agent/aiSummary.js';
 import { startBot } from '../utils/agent/telegramChatListener.js';
-import { startNewsEnhancer } from '../utils/news/newsEnhancer.js';
-import { startNewsPublisher } from '../utils/news/newsPublisher.js';
-import { startTGNewsChannelCollector } from '../utils/news/collectors/jsNewsChannelCollector.js';
+import { startNewsEnhancer } from './utils/news/newsEnhancer.js';
+import { startNewsPublisher } from './utils/news/newsPublisher.js';
+import { startTGNewsChannelCollector } from './utils/news/collectors/jsNewsChannelCollector.js';
 
 import dotenv from 'dotenv';
 
