@@ -6,7 +6,6 @@ import { sendUserMessage } from '../telegram.js';
 dotenv.config();
 
 const BOT_TOKEN = process.env.TELEGRAM_TOKEN;
-let lastUpdateId = 0;
 
 // 设置 bot 命令
 async function setBotCommands() {
@@ -39,29 +38,30 @@ async function setBotCommands() {
 }
 
 // 获取新消息
-async function getUpdates() {
+async function getUpdates(offset = 0) {
   try {
-    const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        offset: lastUpdateId + 1,
-        timeout: 30, // 长轮询超时时间
-        allowed_updates: ['message'] // 只接收消息更新
-      }),
-    });
-
+    const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${offset}&timeout=30`);
     const data = await response.json();
+    
     if (!data.ok) {
+      if (data.description?.includes('terminated by other getUpdates request')) {
+        console.log(`[${getTimeStamp()}] 检测到其他 bot 实例正在运行，等待 5 秒后重试...`);
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        return getUpdates(offset); // 递归重试
+      }
       throw new Error(`Telegram API error: ${data.description}`);
     }
-
+    
     return data.result;
   } catch (error) {
     console.error(`[${getTimeStamp()}] Error getting updates:`, error);
-    return [];
+    // 如果是网络错误，等待后重试
+    if (error.message.includes('fetch failed') || error.message.includes('terminated by other getUpdates request')) {
+      console.log(`[${getTimeStamp()}] 等待 5 秒后重试...`);
+      await new Promise(resolve => setTimeout(resolve, 5000));
+      return getUpdates(offset);
+    }
+    throw error;
   }
 }
 
@@ -80,7 +80,7 @@ async function processMessage(message) {
   try {
     // 处理用户问题，确保传递正确的chatId和用户信息
     const response = await handleUserQuestion(chatId, text, username, firstName, lastName);
-
+    
     if (response && response.message) {
       // 发送回复消息给用户
       await sendUserMessage(response.message, chatId);
@@ -100,25 +100,38 @@ function getTimeStamp() {
 
 // 启动消息监听
 export async function startBot() {
-  console.log(`[${getTimeStamp()}] Starting Telegram bot...`);
-
-  // 设置 bot 命令
-  await setBotCommands();
-
+  console.log(`[${getTimeStamp()}] 启动 Telegram bot...`);
+  let lastUpdateId = 0;
+  
   while (true) {
     try {
-      const updates = await getUpdates();
-
-      for (const update of updates) {
-        if (update.message) {
-          await processMessage(update.message);
+      const updates = await getUpdates(lastUpdateId);
+      
+      if (updates && updates.length > 0) {
+        for (const update of updates) {
+          if (update.update_id > lastUpdateId) {
+            lastUpdateId = update.update_id;
+            
+            if (update.message) {
+              const chatId = update.message.chat.id;
+              const text = update.message.text;
+              
+              console.log(`[${getTimeStamp()}] 收到消息:`, {
+                chatId,
+                text,
+                from: update.message.from.username
+              });
+              
+              // 处理命令
+              await processMessage(update.message);
+            }
+          }
         }
-        lastUpdateId = update.update_id;
       }
     } catch (error) {
-      console.error(`[${getTimeStamp()}] Error in bot loop:`, error);
-      // 等待一段时间后重试
-      await new Promise(resolve => setTimeout(resolve, 5000));
+      console.error(`[${getTimeStamp()}] Bot 运行错误:`, error);
+      // 如果是严重错误，等待更长时间后重试
+      await new Promise(resolve => setTimeout(resolve, 10000));
     }
   }
 } 
