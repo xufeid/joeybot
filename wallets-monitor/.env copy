@@ -1,9 +1,7 @@
-#the helius and supabase api are server1, for a monitor services
-
-HELIUS_API_KEY = '0e6dc147-c15e-4301-8ff6-3cc597f98060'
-RPC_ENDPOINT = 'https://mainnet.helius-rpc.com/?api-key=0e6dc147-c15e-4301-8ff6-3cc597f98060'
-SUPABASE_URL = 'https://tphlwswgsxhpfaiuonee.supabase.co'
-SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRwaGx3c3dnc3hocGZhaXVvbmVlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMxODc1MDksImV4cCI6MjA1ODc2MzUwOX0.RHRCPYd1TCqZAMTjRLXBE_Oua-TU3a0jNk6cOsxKmRQ'
+HELIUS_API_KEY = '5d0d2384-7025-4c94-8c6c-3c9df98f10f8'
+RPC_ENDPOINT = 'https://mainnet.helius-rpc.com/?api-key=5d0d2384-7025-4c94-8c6c-3c9df98f10f8'
+SUPABASE_URL = 'https://avwbobhaetjlzzrpndud.supabase.co'
+SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF2d2JvYmhhZXRqbHp6cnBuZHVkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDE1MzYxMTgsImV4cCI6MjA1NzExMjExOH0.Wm33d-x52qzoOexgXB_JP-JKYSwZ62rE8zEZXULv3oc'
 TELEGRAM_TOKEN = '7224372186:AAEFhJyy5itssF-80ozq_7dJu77W6BjIGqQ'
 TELEGRAM_CHANNEL_NAME = "@joeyxs_bot"
 TELEGRAM_CHANNEL_ID = "-1002413019261"
